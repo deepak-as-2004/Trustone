@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TrustOne | Campus Dashboard</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:#f4f7fb;color:#18243a}
+header{background:#142b4a;color:white;padding:24px 6%;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:26px;font-weight:750}.brand span{color:#67d8c0}
+header small{color:#d2dced}
+main{max-width:1100px;margin:32px auto;padding:0 20px}
+h1{margin-bottom:8px}.sub{color:#66758b;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.card,.panel{background:white;border:1px solid #e3e9f1;border-radius:14px;padding:22px;box-shadow:0 3px 12px #18304b08}
+.label{font-size:13px;color:#68778c}.number{font-size:30px;font-weight:750;margin:12px 0 5px}
+.note{font-size:12px;color:#16836f}
+.panel{margin-top:22px}.panel h2{font-size:18px}
+table{width:100%;border-collapse:collapse;text-align:left}
+th,td{padding:13px 10px;border-bottom:1px solid #edf0f5;font-size:14px}
+th{color:#69768a;font-weight:600}
+.status{background:#e0f7ef;color:#13795b;padding:5px 9px;border-radius:20px;font-size:12px}
+footer{text-align:center;color:#7a8799;font-size:12px;padding:30px}
+@media(max-width:700px){.cards{grid-template-columns:repeat(2,1fr)}header{gap:12px;flex-wrap:wrap}.number{font-size:24px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Trust<span>One</span></div>
+  <div><strong>Trust Administration</strong><br><small>Unified Campus Dashboard</small></div>
+</header>
+<main>
+  <h1>Trust Overview</h1>
+  <div class="sub">A single view across six educational campuses.</div>
+  <section class="cards">
+    <div class="card"><div class="label">Campuses</div><div class="number">06</div><div class="note">Unified overview</div></div>
+    <div class="card"><div class="label">Students</div><div class="number">14,000</div><div class="note">Illustrative target scale</div></div>
+    <div class="card"><div class="label">Record Sources</div><div class="number">40</div><div class="note">Spreadsheets to consolidate</div></div>
+    <div class="card"><div class="label">Core Modules</div><div class="number">04</div><div class="note">Fees · Attendance · Hostel · Reports</div></div>
+  </section>
+  <section class="panel">
+    <h2>Campus Directory</h2>
+    <table>
+      <thead><tr><th>Campus</th><th>Institution Type</th><th>System Status</th></tr></thead>
+      <tbody>
+        <tr><td>Campus 01</td><td>Engineering</td><td><span class="status">Prototype</span></td></tr>
+        <tr><td>Campus 02</td><td>Polytechnic</td><td><span class="status">Prototype</span></td></tr>
+        <tr><td>Campus 03</td><td>School</td><td><span class="status">Prototype</span></td></tr>
+        <tr><td>Campus 04</td><td>School</td><td><span class="status">Prototype</span></td></tr>
+        <tr><td>Campus 05</td><td>School</td><td><span class="status">Prototype</span></td></tr>
+        <tr><td>Campus 06</td><td>Higher Education</td><td><span class="status">Prototype</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="panel">
+    <h2>TrustOne — System Architecture</h2>
+    <p>Frontend: HTML, CSS · Backend: Python + FastAPI · Database: PostgreSQL 18 (installed locally; connection not configured yet)</p>
+    <p class="label">Designed for cross-campus identity resolution, auditable fee records, attendance eligibility, hostel occupancy and trust-wide reporting.</p>
+  </section>
+</main>
+<footer>TrustOne · Hackathon Prototype · Sample dashboard figures, not live database records</footer>
+</body>
+</html>
