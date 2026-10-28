@@ -4,13 +4,15 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
 
+# Project root directory: C:\Users\deepa\trustone
+BASE_DIR = Path(__file__).resolve().parent.parent
+DASHBOARD_FILE = BASE_DIR / "frontend.html"
+
 app = FastAPI(
     title="TrustOne API",
     description="Unified administration prototype for six educational campuses.",
     version="0.2.0",
 )
-
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Synthetic demonstration data only; not connected to a database.
 CAMPUSES = [
@@ -42,7 +44,7 @@ def overview():
     return {
         "project": "TrustOne",
         "campus_count": len(CAMPUSES),
-        "student_count": sum(c["students"] for c in CAMPUSES),
+        "student_count": sum(campus["students"] for campus in CAMPUSES),
         "record_sources": 40,
         "data_mode": "synthetic_demo",
         "campuses": CAMPUSES,
@@ -51,4 +53,13 @@ def overview():
 
 @app.get("/dashboard")
 def dashboard():
-    return FileResponse(BASE_DIR / "frontend.html")
+    if not DASHBOARD_FILE.is_file():
+        return {
+            "error": "Dashboard file not found",
+            "expected_path": str(DASHBOARD_FILE),
+        }
+
+    return FileResponse(
+        path=str(DASHBOARD_FILE),
+        media_type="text/html",
+    )
