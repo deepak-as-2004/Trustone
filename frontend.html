@@ -33,33 +33,79 @@ footer{text-align:center;color:#7a8799;font-size:12px;padding:30px}
 </header>
 <main>
   <h1>Trust Overview</h1>
-  <div class="sub">A single view across six educational campuses.</div>
+  <div class="sub">A unified view across six educational campuses.</div>
+
   <section class="cards">
-    <div class="card"><div class="label">Campuses</div><div class="number">06</div><div class="note">Unified overview</div></div>
-    <div class="card"><div class="label">Students</div><div class="number">14,000</div><div class="note">Illustrative target scale</div></div>
-    <div class="card"><div class="label">Record Sources</div><div class="number">40</div><div class="note">Spreadsheets to consolidate</div></div>
+    <div class="card"><div class="label">Campuses</div><div class="number" id="campus-count">—</div><div class="note">Across the trust</div></div>
+    <div class="card"><div class="label">Students</div><div class="number" id="student-count">—</div><div class="note">Synthetic demo data</div></div>
+    <div class="card"><div class="label">Record Sources</div><div class="number" id="source-count">—</div><div class="note">Consolidation target</div></div>
     <div class="card"><div class="label">Core Modules</div><div class="number">04</div><div class="note">Fees · Attendance · Hostel · Reports</div></div>
   </section>
+
   <section class="panel">
     <h2>Campus Directory</h2>
+    <p id="message" class="label">Loading campus data from TrustOne API…</p>
     <table>
-      <thead><tr><th>Campus</th><th>Institution Type</th><th>System Status</th></tr></thead>
-      <tbody>
-        <tr><td>Campus 01</td><td>Engineering</td><td><span class="status">Prototype</span></td></tr>
-        <tr><td>Campus 02</td><td>Polytechnic</td><td><span class="status">Prototype</span></td></tr>
-        <tr><td>Campus 03</td><td>School</td><td><span class="status">Prototype</span></td></tr>
-        <tr><td>Campus 04</td><td>School</td><td><span class="status">Prototype</span></td></tr>
-        <tr><td>Campus 05</td><td>School</td><td><span class="status">Prototype</span></td></tr>
-        <tr><td>Campus 06</td><td>Higher Education</td><td><span class="status">Prototype</span></td></tr>
-      </tbody>
+      <thead><tr><th>Campus</th><th>Institution Type</th><th>Students</th><th>Status</th></tr></thead>
+      <tbody id="campus-rows"></tbody>
     </table>
   </section>
+
   <section class="panel">
-    <h2>TrustOne — System Architecture</h2>
-    <p>Frontend: HTML, CSS · Backend: Python + FastAPI · Database: PostgreSQL 18 (installed locally; connection not configured yet)</p>
-    <p class="label">Designed for cross-campus identity resolution, auditable fee records, attendance eligibility, hostel occupancy and trust-wide reporting.</p>
+    <h2>System Architecture</h2>
+    <p>Frontend: HTML/CSS/JavaScript · Backend: Python + FastAPI · Database: not connected yet</p>
+    <p class="label">Current dashboard metrics come from the backend API. The records are synthetic demonstration data, not real student records.</p>
+    <p id="api-status" class="note">Checking API connection…</p>
   </section>
 </main>
-<footer>TrustOne · Hackathon Prototype · Sample dashboard figures, not live database records</footer>
+<footer>TrustOne · Hackathon Prototype · Synthetic demonstration data</footer>
+
+<script>
+async function loadOverview() {
+  const message = document.getElementById("message");
+  const apiStatus = document.getElementById("api-status");
+
+  try {
+    const response = await fetch("/api/overview");
+    if (!response.ok) throw new Error("API request failed");
+
+    const data = await response.json();
+
+    document.getElementById("campus-count").textContent = data.campus_count;
+    document.getElementById("student-count").textContent =
+      data.student_count.toLocaleString("en-IN");
+    document.getElementById("source-count").textContent = data.record_sources;
+
+    const rows = document.getElementById("campus-rows");
+    rows.replaceChildren();
+
+    data.campuses.forEach(campus => {
+      const row = document.createElement("tr");
+
+      [campus.name, campus.type, campus.students.toLocaleString("en-IN")].forEach(value => {
+        const cell = document.createElement("td");
+        cell.textContent = value;
+        row.appendChild(cell);
+      });
+
+      const statusCell = document.createElement("td");
+      const badge = document.createElement("span");
+      badge.className = "status";
+      badge.textContent = "Demo data";
+      statusCell.appendChild(badge);
+      row.appendChild(statusCell);
+      rows.appendChild(row);
+    });
+
+    message.textContent = "Campus information loaded from the backend.";
+    apiStatus.textContent = "API connection successful · /api/overview";
+  } catch (error) {
+    message.textContent = "Could not load campus data. Please refresh the page.";
+    apiStatus.textContent = "API connection failed. Check the backend service.";
+  }
+}
+
+loadOverview();
+</script>
 </body>
 </html>

@@ -1,12 +1,26 @@
+
 from pathlib import Path
-from fastapi.responses import FileResponse
+
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 
 app = FastAPI(
     title="TrustOne API",
-    description="A unified student-record system for six educational campuses.",
-    version="0.1.0",
+    description="Unified administration prototype for six educational campuses.",
+    version="0.2.0",
 )
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Synthetic demonstration data only; not connected to a database.
+CAMPUSES = [
+    {"id": 1, "name": "Campus 01", "type": "Engineering", "students": 3200},
+    {"id": 2, "name": "Campus 02", "type": "Polytechnic", "students": 2400},
+    {"id": 3, "name": "Campus 03", "type": "School", "students": 1800},
+    {"id": 4, "name": "Campus 04", "type": "School", "students": 2200},
+    {"id": 5, "name": "Campus 05", "type": "School", "students": 1900},
+    {"id": 6, "name": "Campus 06", "type": "Higher Education", "students": 2500},
+]
 
 
 @app.get("/")
@@ -14,13 +28,27 @@ def root():
     return {
         "project": "TrustOne",
         "status": "running",
-        "milestone": 1,
+        "version": "0.2.0",
     }
 
 
 @app.get("/health")
 def health():
     return {"status": "healthy"}
+
+
+@app.get("/api/overview")
+def overview():
+    return {
+        "project": "TrustOne",
+        "campus_count": len(CAMPUSES),
+        "student_count": sum(c["students"] for c in CAMPUSES),
+        "record_sources": 40,
+        "data_mode": "synthetic_demo",
+        "campuses": CAMPUSES,
+    }
+
+
 @app.get("/dashboard")
 def dashboard():
-    return FileResponse(Path(__file__).resolve().parent.parent / "frontend.html")
+    return FileResponse(BASE_DIR / "frontend.html")
